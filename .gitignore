@@ -1,0 +1,8 @@
+/tags
+.*.swp
+*.swp
+*.egg-info
+*.pot
+*.py[co]
+__pycache__
+.idea/
