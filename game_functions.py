@@ -4,7 +4,7 @@ Game theory functions
 
 import numpy as np
 
-from runparams import *
+from parameters import *
 
 def play_offloading_game(server_selected, b_old, prices):
     '''

@@ -4,7 +4,7 @@ Server selection - Learning system functions
 
 import numpy as np
 
-from runparams import *
+from parameters import *
 
 def server_selection(probabilities):
     '''

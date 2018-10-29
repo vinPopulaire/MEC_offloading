@@ -12,7 +12,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from runparams import *
+from parameters import *
 from helper_functions import *
 from game_functions import *
 from server_selection_functions import *

@@ -4,7 +4,7 @@ Helper functions that are used in the simulation
 
 import numpy as np
 
-from runparams import *
+from parameters import *
 
 def initialize():
     '''
