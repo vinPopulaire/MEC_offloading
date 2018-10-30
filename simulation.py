@@ -19,6 +19,8 @@ from server_selection_functions import *
 
 import time
 
+np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
+
 start = time.time()
 
 all_server_selected = np.empty((0,U), int)
