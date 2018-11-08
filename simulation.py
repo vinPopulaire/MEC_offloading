@@ -36,6 +36,8 @@ np.random.seed(2)
 # Get the initial values for probabilities and prices
 probabilities, prices = initialize()
 
+all_prices = np.append(all_prices, [prices], axis=0)
+
 # Repeat until every user is sure on the selected server
 while not all_users_sure(probabilities):
     # Each user selects a server to which he will offload computation
@@ -67,6 +69,8 @@ while not all_users_sure(probabilities):
     # Find all bytes that are offloaded to each server
     bytes_to_server = np.bincount(server_selected, b, minlength=S)
     all_bytes_to_server = np.append(all_bytes_to_server, [bytes_to_server], axis=0)
+
+    all_prices = np.append(all_prices, [prices], axis=0)
 
     all_fs = np.append(all_fs, [fs], axis=0)
 
