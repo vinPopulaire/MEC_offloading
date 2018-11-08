@@ -92,3 +92,47 @@ def plot_num_of_users_on_each_server(all_server_selected):
     plt.xlabel('iterations')
     plt.ylabel('num of users')
     plt.show(block=False)
+
+def plot_pricing_of_each_server(all_prices):
+    '''
+    Plot pricing of each server on every timeslot
+
+    Parameters
+    ----------
+
+    all_prices: 2-d array
+        Contains on each row the price each server has chosen. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_prices
+
+    # Each row on the transposed matrix contains the price the server has
+    # in each timeslot. Different rows mean different servers.
+    result = np.transpose(result)
+
+    suptitle = 'Price each server has selected in each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_offsets = {}
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        if server_name in y_offsets:
+            y_pos += y_offsets[server_name]
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('iterations')
+    plt.ylabel('num of users')
+    plt.show(block=False)

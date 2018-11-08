@@ -81,4 +81,5 @@ print("Time of simulation:")
 print(end - start)
 
 plot_num_of_users_on_each_server(all_server_selected)
+plot_pricing_of_each_server(all_prices)
 plt.show()
