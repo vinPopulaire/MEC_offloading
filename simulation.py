@@ -16,6 +16,7 @@ from parameters import *
 from helper_functions import *
 from game_functions import *
 from server_selection_functions import *
+from plots import *
 
 import time
 
@@ -74,3 +75,5 @@ while not all_users_sure(probabilities):
 end = time.time()
 print("Time of simulation:")
 print(end - start)
+
+plot_num_of_users_on_each_server(all_server_selected)
