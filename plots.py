@@ -80,7 +80,7 @@ def plot_num_of_users_on_each_server(all_server_selected):
         line = plt.plot(row, lw=2.5, color=color_sequence[index])
 
         # set the text to start on the y of the last value of the line
-        y_pos = row[-1] - 0.5
+        y_pos = row[-1]
 
         server_name = server_names[index]
         # move based on offset if names overlap on plot
@@ -91,4 +91,4 @@ def plot_num_of_users_on_each_server(all_server_selected):
 
     plt.xlabel('iterations')
     plt.ylabel('num of users')
-    plt.show()
+    plt.show(block=False)
