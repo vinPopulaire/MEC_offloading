@@ -6,3 +6,6 @@
 *.py[co]
 __pycache__
 .idea/
+
+.ipynb_checkpoints
+*.ipynb
