@@ -99,6 +99,8 @@ def play_pricing_game(server_selected, b):
     if prices.any() < 0:
         raise ValueError('Prices should be > 0')
 
+    prices[prices == 0] = price_min
+
     return prices
 
 def game_converged(b, b_old, p, p_old):
