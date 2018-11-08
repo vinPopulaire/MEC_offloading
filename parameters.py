@@ -39,20 +39,21 @@ learning_rate: float
 import numpy as np
 
 S = 5
-U = 10
+U = 100
 e1 = 1e-02
 e2 = 1e-02
 
-k = 8
-l = 4
+k = 1000
+l = 100
 
 # User parameters
-a = np.ones(U)
-b_min = 0
-b_max = 1000
+a = 5.9e4 + np.random.random(U)*1e4
+b_min = 10
+b_max = 200
 
 # Server parameters
-c = np.ones(S)
-fs = np.ones(S)*0.2
+c = 0.2 + np.random.random(S)*0.1
+fs = 0.025 + np.random.random(S)*0.005
+price_min = 1e-5
 
-learning_rate = 0.2
+learning_rate = 0.7
