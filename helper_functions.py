@@ -26,5 +26,5 @@ def initialize():
     '''
 
     probabilities = np.ones((U,S))/S
-    prices = np.ones(S)*10
+    prices = np.ones(S)*0.5
     return probabilities, prices
