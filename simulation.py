@@ -19,6 +19,7 @@ from server_selection_functions import *
 
 import time
 
+# keep only three decimal places when printing numbers
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 
 start = time.time()
@@ -69,10 +70,6 @@ while not all_users_sure(probabilities):
     all_fs = np.append(all_fs, [fs], axis=0)
 
     probabilities = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs)
-
-print(probabilities)
-print()
-print(server_selected)
 
 end = time.time()
 print("Time of simulation:")
