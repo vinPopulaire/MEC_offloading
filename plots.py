@@ -134,5 +134,84 @@ def plot_pricing_of_each_server(all_prices):
         plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
 
     plt.xlabel('iterations')
-    plt.ylabel('num of users')
+    plt.ylabel('price')
+    plt.show(block=False)
+
+def plot_receiving_data_on_each_server(all_bytes_to_server):
+    '''
+    Plot the data each server is receiving in each timeslot
+
+    Parameters
+    ----------
+
+    all_bytes_to_server: 2-d array
+        Contains on each row the amount of data each server is receiving. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_bytes_to_server
+
+    # Each row on the transposed matrix contains the data the server receives
+    # in each timeslot. Different rows mean different servers.
+    result = np.transpose(result)
+
+    suptitle = 'Data each server is receiving in each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_offsets = {}
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        if server_name in y_offsets:
+            y_pos += y_offsets[server_name]
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('iterations')
+    plt.ylabel('amount of data (bytes)')
+    plt.show(block=False)
+
+def plot_data_offloading_of_users(all_bytes_offloaded):
+    '''
+    Plot the data each user is offloading in each timeslot
+
+    Parameters
+    ----------
+
+    all_bytes_offloaded: 2-d array
+        Contains on each row the amount of data each user is offloading. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_bytes_offloaded
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = 'Data each user is offloading in each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_offsets = {}
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5)
+
+    plt.xlabel('iterations')
+    plt.ylabel('amount of data (bytes)')
     plt.show(block=False)

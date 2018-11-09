@@ -80,6 +80,8 @@ end = time.time()
 print("Time of simulation:")
 print(end - start)
 
+plot_data_offloading_of_users(all_bytes_offloaded)
 plot_num_of_users_on_each_server(all_server_selected)
 plot_pricing_of_each_server(all_prices)
+plot_receiving_data_on_each_server(all_bytes_to_server)
 plt.show()
