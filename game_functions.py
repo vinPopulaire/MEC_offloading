@@ -4,9 +4,7 @@ Game theory functions
 
 import numpy as np
 
-from parameters import *
-
-def play_offloading_game(server_selected, b_old, prices):
+def play_offloading_game(server_selected, b_old, prices, k, l, a, b_max, b_min, **params):
     '''
     Users play the offloading game to find their best response based on what
     the other users played.
@@ -19,6 +17,21 @@ def play_offloading_game(server_selected, b_old, prices):
     b_old: 1-D array
         offloading data each user had decided to send on the previous
         iteration
+    prices: 1-D array
+        Set the new prices of the servers
+    k: int
+        parameter of the user's satisfaction function
+    l: int
+        parameter of the user's satisfaction function
+    a: 1-D array
+        parameter that reflects users' dynamic behavior to spen more money
+        in order to buy computing support from the MEC servers
+    b_min: int
+        Minimum number of bits that the user is willing to offload
+        Same for all users
+    b_max: int
+        Maximum number of bits that the user is willing to offload
+        Same for all users
 
     Returns
     -------
@@ -47,7 +60,7 @@ def play_offloading_game(server_selected, b_old, prices):
 
     return b
 
-def play_pricing_game(server_selected, b):
+def play_pricing_game(server_selected, b, S, k, l, a, c, fs, price_min, **params):
     '''
     Servers play the pricing game to find their best response based on what
     the users played. Basically just maximize their gain
@@ -59,6 +72,21 @@ def play_pricing_game(server_selected, b):
         list containing the server to which each user is associated
     b: 1-D array
         offloading data each user had decided to send
+    S: int
+        Number of servers
+    k: int
+        parameter of the user's satisfaction function
+    l: int
+        parameter of the user's satisfaction function
+    a: 1-D array
+        parameter that reflects users' dynamic behavior to spen more money
+        in order to buy computing support from the MEC servers
+    c: 1-D array
+        parameter that shows the server's computing cost
+    fs: 1-D array
+        parameter that shows the server's discount
+    price_min: int
+        Minimum vlaue that the server can set his price
 
     Returns
     -------
@@ -103,7 +131,7 @@ def play_pricing_game(server_selected, b):
 
     return prices
 
-def game_converged(b, b_old, p, p_old):
+def game_converged(b, b_old, p, p_old, e1, e2, **params):
     '''
     Check if the game has converged
 

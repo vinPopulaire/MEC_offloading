@@ -4,9 +4,7 @@ Server selection - Learning system functions
 
 import numpy as np
 
-from parameters import *
-
-def server_selection(probabilities):
+def server_selection(probabilities, U, S, **params):
     '''
     Each user selects a server to whom it will offload the data.
 
@@ -52,7 +50,7 @@ def all_users_sure(probabilities):
         return True
     return False
 
-def update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs):
+def update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, learning_rate,  **params):
     '''
     Update action probabilities of users on choosing a server
 

@@ -4,16 +4,17 @@ Helper functions that are used in the simulation
 
 import numpy as np
 
-from parameters import *
-
-def initialize():
+def initialize(S, U, **params):
     '''
     Initialize the probabilities for the simulation
 
     Parameters
     ----------
 
-    none
+    S: int
+        Number of servers
+    U: int
+        Number of users
 
     Returns
     -------

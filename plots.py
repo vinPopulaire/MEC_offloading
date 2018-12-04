@@ -5,8 +5,6 @@ Plot functions to graphically present simulation results
 import numpy as np
 import matplotlib.pyplot as plt
 
-from parameters import *
-
 server_names = ['server 1', 'server 2', 'server 3',
                 'server 4', 'server 5']
 
@@ -44,7 +42,7 @@ def setup_plots(suptitle):
 
     return fig, ax
 
-def plot_num_of_users_on_each_server(all_server_selected):
+def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     '''
     Plot number of users on each server every timeslot
 
@@ -54,6 +52,8 @@ def plot_num_of_users_on_each_server(all_server_selected):
     all_server_selected: 2-d array
         Contains on each row the server each user has selected. Each row is
         a different timeslot
+    S: int
+        Number of servers
 
     Returns
     -------

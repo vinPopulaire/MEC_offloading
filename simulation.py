@@ -23,6 +23,11 @@ import time
 # keep only three decimal places when printing numbers
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 
+params = set_parameters()
+U = params['U']
+S = params['S']
+fs = params['fs']
+
 start = time.time()
 
 all_server_selected = np.empty((0,U), int)
@@ -34,14 +39,14 @@ all_fs = np.empty((0,S), int)
 np.random.seed(2)
 
 # Get the initial values for probabilities and prices
-probabilities, prices = initialize()
+probabilities, prices = initialize(**params)
 
 all_prices = np.append(all_prices, [prices], axis=0)
 
 # Repeat until every user is sure on the selected server
 while not all_users_sure(probabilities):
     # Each user selects a server to which he will offload computation
-    server_selected = server_selection(probabilities)
+    server_selected = server_selection(probabilities, **params)
     # add the selected servers as a row in the matrix
     all_server_selected = np.append(all_server_selected, [server_selected], axis=0)
 
@@ -53,13 +58,13 @@ while not all_users_sure(probabilities):
     converged = False
     while not converged:
         # Users play a game to converge to the Nash Equilibrium
-        b = play_offloading_game(server_selected, b_old, prices_old)
+        b = play_offloading_game(server_selected, b_old, prices_old, **params)
 
         # Servers update their prices based on the users' offloading of data
-        prices = play_pricing_game(server_selected, b)
+        prices = play_pricing_game(server_selected, b, **params)
 
         # Check if game has converged
-        converged = game_converged(b,b_old,prices,prices_old)
+        converged = game_converged(b,b_old,prices,prices_old, **params)
 
         b_old = b
         prices_old = prices
@@ -74,14 +79,14 @@ while not all_users_sure(probabilities):
 
     all_fs = np.append(all_fs, [fs], axis=0)
 
-    probabilities = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs)
+    probabilities = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, **params)
 
 end = time.time()
 print("Time of simulation:")
 print(end - start)
 
 plot_data_offloading_of_users(all_bytes_offloaded)
-plot_num_of_users_on_each_server(all_server_selected)
+plot_num_of_users_on_each_server(all_server_selected, **params)
 plot_pricing_of_each_server(all_prices)
 plot_receiving_data_on_each_server(all_bytes_to_server)
 plt.show()
