@@ -155,7 +155,7 @@ def game_converged(b, b_old, p, p_old, e1, e2, **params):
     '''
 
     # e1 and e2 are the error tolerance defined in parameters
-    if np.abs(b - b_old).all() < e1 and np.abs(p - p_old).all() < e2:
+    if (np.abs(b - b_old) < e1).all()  and (np.abs(p - p_old) < e2).all():
         return True
     return False
 
