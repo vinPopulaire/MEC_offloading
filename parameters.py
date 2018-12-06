@@ -46,13 +46,13 @@ def set_parameters():
     e1 = 1e-02
     e2 = 1e-02
 
-    k = 1000
-    l = 100
+    k = 100
+    l = 1000
 
     # User parameters
-    a = 7.45e4 + np.random.random(U)*1e4
+    a = 2.7*1e3 + np.random.random(U)*1e3
     b_min = 0
-    b_max = 900
+    b_max = 1000
 
     # Server parameters
     c = 0.2 + np.random.random(S)*0.1
