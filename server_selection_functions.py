@@ -77,18 +77,24 @@ def update_probabilities(probabilities, server_selected, b, all_bytes_to_server,
     '''
 
     # calculate PAR
-    # use np.divide to handle cases where b=0
-    a = np.max(all_bytes_to_server, axis=0)
-    b = np.mean(all_bytes_to_server, axis=0)
-    PAR = np.divide(a, b, out=np.zeros_like(a), where=b!=0)
+    # use np.divide to handle cases where tmp2=0
+    tmp1 = np.max(all_bytes_to_server, axis=0)
+    tmp2 = np.mean(all_bytes_to_server, axis=0)
+    PAR = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
     # calculate "penetration"
-    penetration = np.sum(all_bytes_to_server, axis=0)/np.sum(all_bytes_to_server)
+    # use np.divide to handle cases where tmp2=0
+    tmp1 = np.sum(all_bytes_to_server, axis=0)
+    tmp2 = np.sum(all_bytes_to_server)
+    penetration = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
     # use np.divide to handle cases where PAR=0
     Rs = np.sum(all_fs, axis=0) * np.divide(1,PAR, out=np.zeros_like(PAR), where=PAR!=0) * penetration
 
-    reward = Rs/np.sum(Rs)
+    # use np.divide to handle cases where sum(Rs)=0
+    tmp1 = Rs
+    tmp2 = np.sum(Rs)
+    reward = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
     # create second part of probabilities update
     Pr = np.copy(probabilities)
