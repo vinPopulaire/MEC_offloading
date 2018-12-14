@@ -96,25 +96,28 @@ def play_pricing_game(server_selected, b, S, k, l, a, c, fs, price_min, **params
 
     '''
 
-    # Sum of all best responses
-    B = np.sum(b)
-    # Best response of all users except the user
-    B_minus_u = B - b
-
+    # Sum of all best responses on each server
     # np.bincount sums all values on the specific index, so all values corresponding
     # to each server. We specify minlength so that even if the last server
     # is not chosen, we have 0 as a value
+    B_server = np.bincount(server_selected, b, minlength=S)
+
+    # Best response of all users except the user on each server
+    B_minus_u = B_server[server_selected] - b
     inside_sum = B_minus_u/a
 
-    # The sum is different for each server since we take into account only the
-    # users that are associated with the server
-    numerator_sum = np.bincount(server_selected, inside_sum, minlength=S)
+    # sum values on the inside_sum that correspond to the selected servers
+    numerator_sum = []
+    for i in np.arange(S):
+        numerator_sum.append(inside_sum[server_selected==i].sum())
+    numerator_sum = np.array(numerator_sum)
 
     numerator = c*k*l*numerator_sum
 
-    # The sum is different for each server since we take into account only the
-    # users that are associated with the server
-    denominator_sum = np.bincount(server_selected, B_minus_u, minlength=S)
+    denominator_sum = []
+    for i in np.arange(S):
+        denominator_sum.append(B_minus_u[server_selected==i].sum())
+    denominator_sum = np.array(denominator_sum)
 
     denominator = (1 - fs)*denominator_sum
 
