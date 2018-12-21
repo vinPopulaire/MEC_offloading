@@ -269,3 +269,50 @@ def plot_server_welfare(all_server_welfare):
     plt.xlabel('timeslot')
     plt.ylabel('welfare')
     plt.show(block=False)
+
+def plot_server_Rs(all_Rs):
+    '''
+    Plot the data each user is offloading in each timeslot
+
+    Parameters
+    ----------
+
+    all_Rs: 2-d array
+        Contains on each row the Rs of each server. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_Rs
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = 'Rs of the server at the end of each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('timeslot')
+    plt.ylabel('Rs')
+    plt.show(block=False)

@@ -77,6 +77,20 @@ def test_game_converged():
     prices_old = np.array([0.5,0.8,0.2])
     assert game_converged(b,b_old,prices,prices_old, **params) == False
 
+def test_calculate_Rs():
+    """ Test for calculate_Rs """
+
+    params = set_parameters()
+
+    all_bytes_to_server = np.array([np.array([3.0,0.0,1.0])])
+    fs = np.array([0.025, 0.026, 0.027])
+    all_fs = np.array([fs])
+
+    manual_Rs = np.array([0.025*0.75, 0, 0.027*0.25])
+    automatic_Rs = calculate_Rs(all_bytes_to_server, all_fs, **params)
+
+    assert np.allclose(manual_Rs, automatic_Rs)
+
 def test_update_probabilites():
     """ Test for update_probabilities """
 
@@ -86,16 +100,17 @@ def test_update_probabilites():
     probabilities = np.array([np.array([0.3, 0.3, 0.4]),np.array([0.4, 0.3, 0.3]),np.array([0.3, 0.3, 0.4])])
     b = np.array([2,1,1])
     server_selected = np.array([0, 0, 2])
-
-    bytes_to_server = np.array([3.0, 0.0, 1.0])
     all_bytes_to_server = np.array([np.array([3.0,0.0,1.0])])
     fs = np.array([0.025, 0.026, 0.027])
     all_fs = np.array([fs])
+
+    bytes_to_server = np.array([3.0, 0.0, 1.0])
     learning_rate = 0.7
 
     sum_Rs = 0.025*0.75 + 0.027*0.25
     manual_prob = np.array([np.array([0.3 + 0.7*0.025*0.75/sum_Rs*0.7, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3, 0.4 - 0.7*0.025*0.75/sum_Rs*0.4]), np.array([0.4 + 0.7*0.025*0.75/sum_Rs*0.6, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3]), np.array([0.3 - 0.7*0.027*0.25/sum_Rs*0.3, 0.3 - 0.7*0.027*0.25/sum_Rs*0.3, 0.4 + 0.7*0.027*0.25/sum_Rs*0.6]) ])
-    automatic_prob = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, **params)
+    Rs = calculate_Rs(all_bytes_to_server, all_fs, **params)
+    automatic_prob = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
     assert np.allclose(manual_prob, automatic_prob)
 

@@ -37,6 +37,7 @@ all_bytes_to_server = np.empty((0,S), int)
 all_prices = np.empty((0,S), int)
 all_fs = np.empty((0,S), int)
 all_server_welfare = np.empty((0,S), int)
+all_Rs = np.empty((0,S), int)
 
 np.random.seed(2)
 
@@ -84,15 +85,18 @@ while not all_users_sure(probabilities):
     server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
     all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
 
-    probabilities = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, **params)
+    Rs = calculate_Rs(all_bytes_to_server, all_fs)
+    all_Rs = np.append(all_Rs, [Rs], axis=0)
+    probabilities = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
 end = time.time()
 print("Time of simulation:")
 print(end - start)
 
-plot_server_welfare(all_server_welfare)
 plot_data_offloading_of_users(all_bytes_offloaded)
 plot_num_of_users_on_each_server(all_server_selected, **params)
 plot_pricing_of_each_server(all_prices)
 plot_receiving_data_on_each_server(all_bytes_to_server)
+plot_server_welfare(all_server_welfare)
+plot_server_Rs(all_Rs)
 plt.show()

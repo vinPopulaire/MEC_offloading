@@ -50,19 +50,13 @@ def all_users_sure(probabilities):
         return True
     return False
 
-def update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, learning_rate,  **params):
+def calculate_Rs(all_bytes_to_server, all_fs, **params):
     '''
-    Update action probabilities of users on choosing a server
+    Calculate the competitiveness score Rs used on the update function
 
     Parameters
     ----------
 
-    probabilities: 2-D array
-        The probabilities that the user will select the specific server
-    server_selected: 1-D array
-        list containing the server to which each user is associated
-    b: 1-D array
-        offloading data each user had decided to send
     all_bytes_to_server: 2-D array
         The number of bytes the users have offloaded to the specific server
         up to now
@@ -72,8 +66,8 @@ def update_probabilities(probabilities, server_selected, b, all_bytes_to_server,
     Returns
     -------
 
-    probabilities: 2-D array
-        The new probabilities that the user will select the specific server
+    Rs: 1-D array
+        the competitiveness score of each server
     '''
 
     # calculate PAR
@@ -90,6 +84,31 @@ def update_probabilities(probabilities, server_selected, b, all_bytes_to_server,
 
     # use np.divide to handle cases where PAR=0
     Rs = np.sum(all_fs, axis=0) * np.divide(1,PAR, out=np.zeros_like(PAR), where=PAR!=0) * penetration
+
+    return Rs
+
+def update_probabilities(Rs, probabilities, server_selected, b, learning_rate,  **params):
+    '''
+    Update action probabilities of users on choosing a server
+
+    Parameters
+    ----------
+
+    Rs: 1-D array
+        the competitiveness score of each server
+    probabilities: 2-D array
+        The probabilities that the user will select the specific server
+    server_selected: 1-D array
+        list containing the server to which each user is associated
+    b: 1-D array
+        offloading data each user had decided to send
+
+    Returns
+    -------
+
+    probabilities: 2-D array
+        The new probabilities that the user will select the specific server
+    '''
 
     # use np.divide to handle cases where sum(Rs)=0
     tmp1 = Rs
