@@ -73,7 +73,8 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     suptitle = 'Number of users each server has in each timeslot'
     fig, ax = setup_plots(suptitle)
 
-    y_offsets = {}
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
 
     for index, row in enumerate(result):
 
@@ -84,8 +85,10 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
 
         server_name = server_names[index]
         # move based on offset if names overlap on plot
-        if server_name in y_offsets:
-            y_pos += y_offsets[server_name]
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
 
         plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
 
@@ -118,7 +121,8 @@ def plot_pricing_of_each_server(all_prices):
     suptitle = 'Price each server has selected in each timeslot'
     fig, ax = setup_plots(suptitle)
 
-    y_offsets = {}
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
 
     for index, row in enumerate(result):
 
@@ -128,8 +132,10 @@ def plot_pricing_of_each_server(all_prices):
         y_pos = row[-1]
         server_name = server_names[index]
         # move based on offset if names overlap on plot
-        if server_name in y_offsets:
-            y_pos += y_offsets[server_name]
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
 
         plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
 
@@ -162,7 +168,8 @@ def plot_receiving_data_on_each_server(all_bytes_to_server):
     suptitle = 'Data each server is receiving in each timeslot'
     fig, ax = setup_plots(suptitle)
 
-    y_offsets = {}
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
 
     for index, row in enumerate(result):
 
@@ -172,8 +179,10 @@ def plot_receiving_data_on_each_server(all_bytes_to_server):
         y_pos = row[-1]
         server_name = server_names[index]
         # move based on offset if names overlap on plot
-        if server_name in y_offsets:
-            y_pos += y_offsets[server_name]
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
 
         plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
 
@@ -205,8 +214,6 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
 
     suptitle = 'Data each user is offloading in each timeslot'
     fig, ax = setup_plots(suptitle)
-
-    y_offsets = {}
 
     for index, row in enumerate(result):
 
