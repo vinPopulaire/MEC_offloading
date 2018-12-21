@@ -2,6 +2,7 @@ import numpy as np
 
 from server_selection_functions import *
 from game_functions import *
+from metrics import *
 from parameters import *
 
 def test_all_users_sure():
@@ -147,5 +148,21 @@ def test_play_pricing_game():
     automatic_price = play_pricing_game(server_selected, b, **params)
 
     assert np.allclose(manual_price, automatic_price)
+
+    params = set_parameters()
+
+def test_calculate_server_welfare():
+    """ Test for calculate_server_welfare """
+
+    params = set_parameters()
+    c = params["c"] = np.array([0.1, 0.2, 0.3])
+    fs = params["fs"] = np.array([0.2, 0.3, 0.4])
+    prices = np.array([2,3,4])
+    bytes_to_server = np.array([3, 3, 0])
+
+    manual_welfare = np.array([(1-fs[0])*prices[0]*bytes_to_server[0] - c[0]*bytes_to_server[0], (1-fs[1])*prices[1]*bytes_to_server[1] - c[1]*bytes_to_server[1], (1-fs[2])*prices[2]*bytes_to_server[2] - c[2]*bytes_to_server[2]])
+
+    automatic_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
+    assert np.allclose(manual_welfare, automatic_welfare)
 
     params = set_parameters()

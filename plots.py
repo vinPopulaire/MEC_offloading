@@ -222,3 +222,50 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
     plt.xlabel('iterations')
     plt.ylabel('amount of data (bytes)')
     plt.show(block=False)
+
+def plot_server_welfare(all_server_welfare):
+    '''
+    Plot the data each user is offloading in each timeslot
+
+    Parameters
+    ----------
+
+    all_server_welfare: 2-d array
+        Contains on each row the welfare of each server. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_server_welfare
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = 'Welfare of the server at the end of each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('timeslot')
+    plt.ylabel('welfare')
+    plt.show(block=False)

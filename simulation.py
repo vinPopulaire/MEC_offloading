@@ -16,6 +16,7 @@ from parameters import *
 from helper_functions import *
 from game_functions import *
 from server_selection_functions import *
+from metrics import *
 from plots import *
 
 import time
@@ -35,6 +36,7 @@ all_bytes_offloaded = np.empty((0,U), int)
 all_bytes_to_server = np.empty((0,S), int)
 all_prices = np.empty((0,S), int)
 all_fs = np.empty((0,S), int)
+all_server_welfare = np.empty((0,S), int)
 
 np.random.seed(2)
 
@@ -79,12 +81,16 @@ while not all_users_sure(probabilities):
 
     all_fs = np.append(all_fs, [fs], axis=0)
 
+    server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
+    all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
+
     probabilities = update_probabilities(probabilities, server_selected, b, all_bytes_to_server, all_fs, **params)
 
 end = time.time()
 print("Time of simulation:")
 print(end - start)
 
+plot_server_welfare(all_server_welfare)
 plot_data_offloading_of_users(all_bytes_offloaded)
 plot_num_of_users_on_each_server(all_server_selected, **params)
 plot_pricing_of_each_server(all_prices)
