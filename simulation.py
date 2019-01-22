@@ -42,7 +42,7 @@ all_Rs = np.empty((0,S), int)
 all_PAR = np.empty((0,S), int)
 all_penetration = np.empty((0,S), int)
 
-np.random.seed(2)
+# np.random.seed(2)
 
 # Get the initial values for probabilities and prices
 probabilities, prices = initialize(**params)

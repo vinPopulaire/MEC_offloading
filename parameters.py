@@ -51,13 +51,14 @@ def set_parameters():
 
     # User parameters
     a = 2.7*1e3 + np.random.random(U)*1e3
+    # a = 3.5*1e3 + np.random.random(U)*1e2
     b_min = 0
     b_max = 1000
 
     # Server parameters
     c = 0.2 + np.random.random(S)*0.1
     fs = 0.025 + np.random.random(S)*0.005
-    price_min = 1e-1*5
+    price_min = 0.5
 
     learning_rate = 0.7
 
