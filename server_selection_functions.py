@@ -50,7 +50,7 @@ def all_users_sure(probabilities):
         return True
     return False
 
-def calculate_Rs(all_bytes_to_server, all_fs, **params):
+def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
     '''
     Calculate the competitiveness score Rs used on the update function
 
@@ -85,7 +85,7 @@ def calculate_Rs(all_bytes_to_server, all_fs, **params):
     # use np.divide to handle cases where PAR=0
     Rs = np.sum(all_fs, axis=0) * np.divide(1,PAR, out=np.zeros_like(PAR), where=PAR!=0) * penetration
 
-    return Rs
+    return Rs,PAR,penetration
 
 def update_probabilities(Rs, probabilities, server_selected, b, learning_rate,  **params):
     '''

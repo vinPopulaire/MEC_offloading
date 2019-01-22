@@ -37,7 +37,10 @@ all_bytes_to_server = np.empty((0,S), int)
 all_prices = np.empty((0,S), int)
 all_fs = np.empty((0,S), int)
 all_server_welfare = np.empty((0,S), int)
+
 all_Rs = np.empty((0,S), int)
+all_PAR = np.empty((0,S), int)
+all_penetration = np.empty((0,S), int)
 
 np.random.seed(2)
 
@@ -85,8 +88,10 @@ while not all_users_sure(probabilities):
     server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
     all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
 
-    Rs = calculate_Rs(all_bytes_to_server, all_fs)
+    Rs,PAR,penetration = calculate_competitiveness(all_bytes_to_server, all_fs)
     all_Rs = np.append(all_Rs, [Rs], axis=0)
+    all_PAR = np.append(all_PAR, [PAR], axis=0)
+    all_penetration = np.append(all_penetration, [penetration], axis=0)
     probabilities = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
 end = time.time()
