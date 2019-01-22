@@ -225,7 +225,7 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
 
 def plot_server_welfare(all_server_welfare):
     '''
-    Plot the data each user is offloading in each timeslot
+    Plot the welfare of each server in each timeslot
 
     Parameters
     ----------
@@ -272,7 +272,7 @@ def plot_server_welfare(all_server_welfare):
 
 def plot_server_Rs(all_Rs):
     '''
-    Plot the data each user is offloading in each timeslot
+    Plot the competitiveness score each server has in each timeslot
 
     Parameters
     ----------
