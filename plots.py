@@ -438,6 +438,8 @@ def plot_server_discount(all_fs):
 
     y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = np.abs(np.max(result))*0.005;
 
     for index, row in enumerate(result):
 
@@ -532,6 +534,8 @@ def plot_server_cost(all_c):
 
     y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = np.abs(np.max(result))*0.005;
 
     for index, row in enumerate(result):
 
