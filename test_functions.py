@@ -87,7 +87,7 @@ def test_calculate_competitiveness():
     all_fs = np.array([fs])
 
     manual_Rs = np.array([0.025*0.75, 0, 0.027*0.25])
-    automatic_Rs,_,_ = calculate_competitiveness(all_bytes_to_server, all_fs, **params)
+    automatic_Rs,_,_,_ = calculate_competitiveness(all_bytes_to_server, all_fs, **params)
 
     assert np.allclose(manual_Rs, automatic_Rs)
 
@@ -109,7 +109,7 @@ def test_update_probabilites():
 
     sum_Rs = 0.025*0.75 + 0.027*0.25
     manual_prob = np.array([np.array([0.3 + 0.7*0.025*0.75/sum_Rs*0.7, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3, 0.4 - 0.7*0.025*0.75/sum_Rs*0.4]), np.array([0.4 + 0.7*0.025*0.75/sum_Rs*0.6, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3, 0.3 - 0.7*0.025*0.75/sum_Rs*0.3]), np.array([0.3 - 0.7*0.027*0.25/sum_Rs*0.3, 0.3 - 0.7*0.027*0.25/sum_Rs*0.3, 0.4 + 0.7*0.027*0.25/sum_Rs*0.6]) ])
-    Rs,_,_ = calculate_competitiveness(all_bytes_to_server, all_fs, **params)
+    Rs,_,_,_ = calculate_competitiveness(all_bytes_to_server, all_fs, **params)
     automatic_prob = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
     assert np.allclose(manual_prob, automatic_prob)

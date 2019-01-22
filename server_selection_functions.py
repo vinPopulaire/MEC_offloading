@@ -70,6 +70,9 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
         the competitiveness score of each server
     '''
 
+    # caclulate total discount
+    total_discount = np.sum(all_fs, axis=0)
+
     # calculate PAR
     # use np.divide to handle cases where tmp2=0
     tmp1 = np.max(all_bytes_to_server, axis=0)
@@ -83,9 +86,9 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
     penetration = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
     # use np.divide to handle cases where PAR=0
-    Rs = np.sum(all_fs, axis=0) * np.divide(1,PAR, out=np.ones_like(PAR), where=PAR!=0) * penetration
+    Rs = total_discount * np.divide(1,PAR, out=np.ones_like(PAR), where=PAR!=0) * penetration
 
-    return Rs,PAR,penetration
+    return Rs,total_discount,PAR,penetration
 
 def update_probabilities(Rs, probabilities, server_selected, b, learning_rate,  **params):
     '''
