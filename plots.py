@@ -504,3 +504,50 @@ def plot_server_total_discount(all_total_discount):
     plt.xlabel('timeslot')
     plt.ylabel('total discount')
     plt.show(block=False)
+
+def plot_server_cost(all_c):
+    '''
+    Plot the cost each server has in each timeslot
+
+    Parameters
+    ----------
+
+    all_c: 2-d array
+        Contains on each row the server computing cost of each server. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_c
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = 'computing cost of the server at the end of each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('timeslot')
+    plt.ylabel('computing cost')
+    plt.show(block=False)

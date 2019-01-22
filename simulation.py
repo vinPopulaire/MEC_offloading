@@ -28,6 +28,7 @@ params = set_parameters()
 U = params['U']
 S = params['S']
 fs = params['fs']
+c = params['c']
 
 start = time.time()
 
@@ -35,6 +36,7 @@ all_server_selected = np.empty((0,U), int)
 all_bytes_offloaded = np.empty((0,U), int)
 all_bytes_to_server = np.empty((0,S), int)
 all_prices = np.empty((0,S), int)
+all_c = np.empty((0,S), int)
 all_fs = np.empty((0,S), int)
 all_total_discount = np.empty((0,S), int)
 all_server_welfare = np.empty((0,S), int)
@@ -85,6 +87,7 @@ while not all_users_sure(probabilities):
     all_prices = np.append(all_prices, [prices], axis=0)
 
     all_fs = np.append(all_fs, [fs], axis=0)
+    all_c = np.append(all_c, [c], axis=0)
 
     server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
     all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
@@ -109,5 +112,6 @@ plot_server_Rs(all_Rs)
 plot_server_PAR(all_PAR)
 plot_server_penetration(all_penetration)
 plot_server_discount(all_fs)
+plot_server_cost(all_c)
 plot_server_total_discount(all_total_discount)
 plt.show()
