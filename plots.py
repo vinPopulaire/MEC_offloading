@@ -551,3 +551,52 @@ def plot_server_cost(all_c):
     plt.xlabel('timeslot')
     plt.ylabel('computing cost')
     plt.show(block=False)
+
+def plot_user_probability_to_select_server(user_id, all_probabilities):
+    '''
+    Plot the probability that the user will select each server in each timeslot
+
+    Parameters
+    ----------
+
+    all_probabilities: 3-d array
+        The first dimension contains the different users,
+        The second dimension contains the timeslots,
+        The third dimension contains the probabilities that the user selects the servers
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_probabilities[user_id]
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = 'Probability that the user ' + str(user_id) + ' will select each server at the end of each timeslot'
+    fig, ax = setup_plots(suptitle)
+
+    y_positions = []
+    offset = np.abs(np.max(result) - np.min(result))*0.03
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel('timeslot')
+    plt.ylabel('probability')
+    plt.show(block=False)
