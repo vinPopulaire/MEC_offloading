@@ -45,10 +45,15 @@ all_Rs = np.empty((0,S), int)
 all_PAR = np.empty((0,S), int)
 all_penetration = np.empty((0,S), int)
 
+all_probabilities = [[] for i in range(U)]
+
 # np.random.seed(2)
 
 # Get the initial values for probabilities and prices
 probabilities, prices = initialize(**params)
+
+for i in range(U):
+    all_probabilities[i].append(probabilities[i])
 
 all_prices = np.append(all_prices, [prices], axis=0)
 
@@ -99,6 +104,13 @@ while not all_users_sure(probabilities):
     all_total_discount = np.append(all_total_discount, [total_discount], axis=0)
     probabilities = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
+    for i in range(U):
+        all_probabilities[i].append(probabilities[i])
+
+for i in range(len(all_probabilities)):
+    all_probabilities[i] = np.array(all_probabilities[i])
+all_probabilities = np.array(all_probabilities)
+
 end = time.time()
 print("Time of simulation:")
 print(end - start)
@@ -114,4 +126,8 @@ plot_server_penetration(all_penetration)
 plot_server_discount(all_fs)
 plot_server_cost(all_c)
 plot_server_total_discount(all_total_discount)
+
+# for user in range(U):
+#     plot_user_probability_to_select_server(user, all_probabilities)
+
 plt.show()
