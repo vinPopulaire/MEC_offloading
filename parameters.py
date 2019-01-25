@@ -56,8 +56,8 @@ def set_parameters():
     b_max = 1000
 
     # Server parameters
-    c = 0.2 + np.random.random(S)*0.1
-    fs = 0.025 + np.random.random(S)*0.005
+    c = 0.2 * np.ones(S)
+    fs = 0.025 * np.ones(S)
     price_min = 0.5
 
     learning_rate = 0.7
