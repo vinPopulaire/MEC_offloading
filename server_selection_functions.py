@@ -50,7 +50,7 @@ def all_users_sure(probabilities):
         return True
     return False
 
-def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
+def calculate_competitiveness(all_bytes_to_server, all_fs, U, b_max,  **params):
     '''
     Calculate the competitiveness score Rs used on the update function
 
@@ -62,22 +62,32 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
         up to now
     all_fs: 2-D array
         The discount the servers have offered up to now
+    U: int
+        Number of users
+    b_max: int
+        Maximum number of bits that the user is willing to offload
 
     Returns
     -------
 
     Rs: 1-D array
         the competitiveness score of each server
+    total_discount: 1-D array
+        the total dicount of each server
+    congestion: 1-D array
+        the congestion of each server
+    penetration: 1-D array
+        the penetration of each server on the offloading market
     '''
 
     # caclulate total discount
     total_discount = np.sum(all_fs, axis=0)
 
-    # calculate PAR
-    # use np.divide to handle cases where tmp2=0
-    tmp1 = np.max(all_bytes_to_server, axis=0)
-    tmp2 = np.mean(all_bytes_to_server, axis=0)
-    PAR = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
+    # calculate congestion
+    # set B_max of each server to be able to handle all traffic
+    tmp1 = all_bytes_to_server[-1]
+    tmp2 = b_max * U
+    congestion = np.power((tmp1/tmp2),5)
 
     # calculate "penetration"
     # use np.divide to handle cases where tmp2=0
@@ -85,10 +95,9 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, **params):
     tmp2 = np.sum(all_bytes_to_server)
     penetration = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
-    # use np.divide to handle cases where PAR=0
-    Rs = total_discount * np.divide(1,PAR, out=np.ones_like(PAR), where=PAR!=0) * penetration
+    Rs = total_discount * 1/congestion * penetration
 
-    return Rs,total_discount,PAR,penetration
+    return Rs,total_discount,congestion,penetration
 
 def update_probabilities(Rs, probabilities, server_selected, b, learning_rate,  **params):
     '''

@@ -317,15 +317,15 @@ def plot_server_Rs(all_Rs):
     plt.ylabel('Rs')
     plt.show(block=False)
 
-def plot_server_PAR(all_PAR):
+def plot_server_congestion(all_congestion):
     '''
     Plot the peak to average ratio each server has in each timeslot
 
     Parameters
     ----------
 
-    all_PAR: 2-d array
-        Contains on each row the PAR of each server. Each row is
+    all_congestion: 2-d array
+        Contains on each row the congestion of each server. Each row is
         a different timeslot
 
     Returns
@@ -333,13 +333,13 @@ def plot_server_PAR(all_PAR):
     Plot
 
     '''
-    result = all_PAR
+    result = all_congestion
 
     # Each row on the transposed matrix contains the data the user offloads
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'PAR of the server at the end of each timeslot'
+    suptitle = 'congestion of the server at the end of each timeslot'
     fig, ax = setup_plots(suptitle)
 
     y_positions = []
@@ -361,7 +361,7 @@ def plot_server_PAR(all_PAR):
         plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
 
     plt.xlabel('timeslot')
-    plt.ylabel('PAR')
+    plt.ylabel('congestion')
     plt.show(block=False)
 
 def plot_server_penetration(all_penetration):
