@@ -21,10 +21,15 @@ from plots import *
 
 import time
 
-# keep only three decimal places when printing numbers
+# Select which case to run from homogeneous/heterogeneous users/servers
+# users: homo/hetero
+# servers: homo/hetero
+case = {"users": "homo", "servers": "homo"}
+
+# Keep only three decimal places when printing numbers
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 
-params = set_parameters()
+params = set_parameters(case)
 U = params['U']
 S = params['S']
 fs = params['fs']

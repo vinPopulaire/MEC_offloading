@@ -4,9 +4,18 @@ Parameters of the simulation
 
 import numpy as np
 
-def set_parameters():
+def set_parameters(case):
     '''
+    Sets the parameters used in the simulation
+
     Parameters
+    ----------
+
+    case: dictionary
+        Dictionary containing infromation about whether the user and the servers
+        are homogeneous or heterogeneous
+
+    Returns
     ----------
 
     S: int
@@ -50,16 +59,25 @@ def set_parameters():
     l = 1000
 
     # User parameters
-    a = 2.7*1e3 + np.random.random(U)*1e3
-    # a = 3.5*1e3 + np.random.random(U)*1e2
+    if case["users"] == "homo":
+        a = 5*1e2 * np.ones(U)
+    if case["users"] == "hetero":
+        # a = 2.7*1e3 + np.random.random(U)*1e3
+        a = 5*1e2 + np.random.random(U)*1e3
+
     b_min = 0
     b_max = 1000
 
     # Server parameters
-    c = 0.2 * np.ones(S)
-    fs = 0.025 * np.ones(S)
+    if case["servers"] == "homo":
+        c = 0.2 * np.ones(S)
+        fs = 0.025 * np.ones(S)
+    if case["servers"] == "hetero":
+        c = 0.2 + np.random.random(S)
+        fs = 0.025 + np.random.random(S) * 0.1
+
     price_min = 0.5
 
-    learning_rate = 0.7
+    learning_rate = 0.1
 
     return locals()
