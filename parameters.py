@@ -4,6 +4,9 @@ Parameters of the simulation
 
 import numpy as np
 
+SAVE_FIGS = False
+ONE_FIGURE = True
+
 def set_parameters(case):
     '''
     Sets the parameters used in the simulation

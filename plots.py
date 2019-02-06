@@ -5,6 +5,8 @@ Plot functions to graphically present simulation results
 import numpy as np
 import matplotlib.pyplot as plt
 
+from parameters import SAVE_FIGS, ONE_FIGURE
+
 server_names = ['server 1', 'server 2', 'server 3',
                 'server 4', 'server 5']
 
@@ -42,6 +44,86 @@ def setup_plots(suptitle):
 
     return fig, ax
 
+def create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset):
+    '''
+    Generate the plot needed
+
+    Parameters
+    ----------
+
+    result: 2-d array
+        Each row is a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    if ONE_FIGURE == False:
+        fig, ax = setup_plots(suptitle)
+
+    y_positions = []
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+
+        # set the text to start on the y of the last value of the line
+        y_pos = row[-1]
+        server_name = server_names[index]
+        # move based on offset if names overlap on plot
+        while y_pos in y_positions:
+            y_pos += offset
+
+        y_positions.append(y_pos)
+
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    if SAVE_FIGS == True and ONE_FIGURE == False:
+        plt.savefig("plots/" + path_name + ".png")
+    else:
+        plt.show(block=False)
+
+
+def plot_data_offloading_of_users(all_bytes_offloaded):
+    '''
+    Plot the data each user is offloading in each timeslot
+
+    Parameters
+    ----------
+
+    all_bytes_offloaded: 2-d array
+        Contains on each row the amount of data each user is offloading. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_bytes_offloaded
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = "Data each user is offloading in each timeslot"
+
+    if ONE_FIGURE == False:
+        fig, ax = setup_plots(suptitle)
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5)
+
+    plt.xlabel('iterations')
+    plt.ylabel('amount of data (bytes)')
+    plt.show(block=False)
+
+
 def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     '''
     Plot number of users on each server every timeslot
@@ -70,31 +152,15 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     # in each timeslot. Different rows mean different servers.
     result = np.transpose(result)
 
-    suptitle = 'Number of users each server has in each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_server_selected"
+    suptitle = "Number of users each server has in each timeslot"
+    xlabel = "timeslots"
+    ylabel = "num of users"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('iterations')
-    plt.ylabel('num of users')
-    plt.show(block=False)
 
 def plot_pricing_of_each_server(all_prices):
     '''
@@ -118,30 +184,15 @@ def plot_pricing_of_each_server(all_prices):
     # in each timeslot. Different rows mean different servers.
     result = np.transpose(result)
 
-    suptitle = 'Price each server has selected in each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_prices"
+    suptitle = "Price each server has selected in each timeslot"
+    xlabel = "timeslots"
+    ylabel = "price"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('iterations')
-    plt.ylabel('price')
-    plt.show(block=False)
 
 def plot_receiving_data_on_each_server(all_bytes_to_server):
     '''
@@ -165,63 +216,15 @@ def plot_receiving_data_on_each_server(all_bytes_to_server):
     # in each timeslot. Different rows mean different servers.
     result = np.transpose(result)
 
-    suptitle = 'Data each server is receiving in each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_bytes_to_server"
+    suptitle = "Data each server is receiving in each timeslot"
+    xlabel = "timeslots"
+    ylabel = "amount of data (bytes)"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('iterations')
-    plt.ylabel('amount of data (bytes)')
-    plt.show(block=False)
-
-def plot_data_offloading_of_users(all_bytes_offloaded):
-    '''
-    Plot the data each user is offloading in each timeslot
-
-    Parameters
-    ----------
-
-    all_bytes_offloaded: 2-d array
-        Contains on each row the amount of data each user is offloading. Each row is
-        a different timeslot
-
-    Returns
-    -------
-    Plot
-
-    '''
-    result = all_bytes_offloaded
-
-    # Each row on the transposed matrix contains the data the user offloads
-    # in each timeslot. Different rows mean different user.
-    result = np.transpose(result)
-
-    suptitle = 'Data each user is offloading in each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    for index, row in enumerate(result):
-
-        line = plt.plot(row, lw=2.5)
-
-    plt.xlabel('iterations')
-    plt.ylabel('amount of data (bytes)')
-    plt.show(block=False)
 
 def plot_server_welfare(all_server_welfare):
     '''
@@ -245,30 +248,15 @@ def plot_server_welfare(all_server_welfare):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'Welfare of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_server_welfare"
+    suptitle = "Welfare of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "welfare"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('welfare')
-    plt.show(block=False)
 
 def plot_server_Rs(all_Rs):
     '''
@@ -292,30 +280,15 @@ def plot_server_Rs(all_Rs):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'Rs of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_Rs"
+    suptitle = "Rs of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "Rs"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('Rs')
-    plt.show(block=False)
 
 def plot_server_congestion(all_congestion):
     '''
@@ -339,30 +312,15 @@ def plot_server_congestion(all_congestion):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'congestion of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_congestion"
+    suptitle = "congestion of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "congestion"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('congestion')
-    plt.show(block=False)
 
 def plot_server_penetration(all_penetration):
     '''
@@ -386,30 +344,15 @@ def plot_server_penetration(all_penetration):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'penetration of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_penetration"
+    suptitle = "penetration of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "penetration"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('penetration')
-    plt.show(block=False)
 
 def plot_server_discount(all_fs):
     '''
@@ -433,32 +376,18 @@ def plot_server_discount(all_fs):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'discount of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
     y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
     if offset == 0:
         offset = np.abs(np.max(result))*0.005;
 
-    for index, row in enumerate(result):
+    path_name = "all_fs"
+    suptitle = "discount of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "discount"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('discount')
-    plt.show(block=False)
 
 def plot_server_total_discount(all_total_discount):
     '''
@@ -482,30 +411,15 @@ def plot_server_total_discount(all_total_discount):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'total discount of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    path_name = "all_total_discount"
+    suptitle = "total discount of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "total discount"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('total discount')
-    plt.show(block=False)
 
 def plot_server_cost(all_c):
     '''
@@ -529,32 +443,17 @@ def plot_server_cost(all_c):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'computing cost of the server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
     if offset == 0:
         offset = np.abs(np.max(result))*0.005;
 
-    for index, row in enumerate(result):
+    path_name = "all_c'"
+    suptitle = "computing cost of the server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "computing cost"
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('computing cost')
-    plt.show(block=False)
 
 def plot_user_probability_to_select_server(user_id, all_probabilities):
     '''
@@ -580,27 +479,11 @@ def plot_user_probability_to_select_server(user_id, all_probabilities):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    suptitle = 'Probability that the user ' + str(user_id) + ' will select each server at the end of each timeslot'
-    fig, ax = setup_plots(suptitle)
-
-    y_positions = []
+    path_name = "all_probabilities_user_" + str(user_id)
+    suptitle = "Probability that the user " + str(user_id) + " will select each server at the end of each timeslot"
+    xlabel = "timeslots"
+    ylabel = "probabilities"
     offset = np.abs(np.max(result) - np.min(result))*0.03
 
-    for index, row in enumerate(result):
+    create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
-
-        # set the text to start on the y of the last value of the line
-        y_pos = row[-1]
-        server_name = server_names[index]
-        # move based on offset if names overlap on plot
-        while y_pos in y_positions:
-            y_pos += offset
-
-        y_positions.append(y_pos)
-
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
-
-    plt.xlabel('timeslot')
-    plt.ylabel('probability')
-    plt.show(block=False)
