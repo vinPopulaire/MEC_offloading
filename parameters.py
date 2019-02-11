@@ -63,7 +63,9 @@ def set_parameters(case):
 
     # User parameters
     if case["users"] == "homo":
-        a = 5*1e2 * np.ones(U)
+        # a = 5*1e2 * np.ones(U)
+        # a = 1*1e3 * np.ones(U) # homo hetero
+        a = 4*1e3 * np.ones(U) # homo homo
     if case["users"] == "hetero":
         # a = 2.7*1e3 + np.random.random(U)*1e3
         a = 5*1e2 + np.random.random(U)*1e3
