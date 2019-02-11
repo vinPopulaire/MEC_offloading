@@ -153,6 +153,8 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_server_selected"
     suptitle = "Number of users each server has in each timeslot"
@@ -185,6 +187,8 @@ def plot_pricing_of_each_server(all_prices):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_prices"
     suptitle = "Price each server has selected in each timeslot"
@@ -217,6 +221,8 @@ def plot_receiving_data_on_each_server(all_bytes_to_server):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_bytes_to_server"
     suptitle = "Data each server is receiving in each timeslot"
@@ -249,6 +255,8 @@ def plot_server_welfare(all_server_welfare):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_server_welfare"
     suptitle = "Welfare of the server at the end of each timeslot"
@@ -281,6 +289,8 @@ def plot_server_Rs(all_Rs):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_Rs"
     suptitle = "Rs of the server at the end of each timeslot"
@@ -313,6 +323,8 @@ def plot_server_congestion(all_congestion):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_congestion"
     suptitle = "congestion of the server at the end of each timeslot"
@@ -345,6 +357,8 @@ def plot_server_penetration(all_penetration):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_penetration"
     suptitle = "penetration of the server at the end of each timeslot"
@@ -376,10 +390,9 @@ def plot_server_discount(all_fs):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
-    y_positions = []
     offset = np.abs(np.max(result) - np.min(result))*0.03
     if offset == 0:
-        offset = np.abs(np.max(result))*0.005;
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_fs"
     suptitle = "discount of the server at the end of each timeslot"
@@ -412,6 +425,8 @@ def plot_server_total_discount(all_total_discount):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_total_discount"
     suptitle = "total discount of the server at the end of each timeslot"
@@ -445,7 +460,7 @@ def plot_server_cost(all_c):
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
     if offset == 0:
-        offset = np.abs(np.max(result))*0.005;
+        offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_c'"
     suptitle = "computing cost of the server at the end of each timeslot"
@@ -479,11 +494,14 @@ def plot_user_probability_to_select_server(user_id, all_probabilities):
     # in each timeslot. Different rows mean different user.
     result = np.transpose(result)
 
+    offset = np.abs(np.max(result) - np.min(result))*0.03
+    if offset == 0:
+        offset = 0.005 + np.abs(np.max(result))*0.005;
+
     path_name = "all_probabilities_user_" + str(user_id)
     suptitle = "Probability that the user " + str(user_id) + " will select each server at the end of each timeslot"
     xlabel = "timeslots"
     ylabel = "probabilities"
-    offset = np.abs(np.max(result) - np.min(result))*0.03
 
     create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
