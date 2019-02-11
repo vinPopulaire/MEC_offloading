@@ -130,7 +130,7 @@ def play_pricing_game(server_selected, b, S, k, l, a, c, fs, price_min, **params
     if prices.any() < 0:
         raise ValueError('Prices should be > 0')
 
-    prices[prices == 0] = price_min
+    prices[prices < price_min] = price_min
 
     return prices
 
