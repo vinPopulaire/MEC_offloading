@@ -88,6 +88,7 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, U, b_max,  **params):
     tmp1 = all_bytes_to_server[-1]
     tmp2 = b_max * U
     congestion = np.power((tmp1/tmp2),5)
+    congestion[congestion==0] = 0.001 # to avoid division by zero
 
     # calculate "penetration"
     # use np.divide to handle cases where tmp2=0
