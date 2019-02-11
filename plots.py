@@ -402,15 +402,15 @@ def plot_server_discount(all_fs):
     create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 
 
-def plot_server_total_discount(all_total_discount):
+def plot_server_relative_price(all_relative_price):
     '''
-    Plot the total discount each server has in each timeslot
+    Plot the relative price each server sets in each timeslot
 
     Parameters
     ----------
 
-    all_total_discount: 2-d array
-        Contains on each row the total discount of each server. Each row is
+    all_relative_price: 2-d array
+        Contains on each row the relative_price of each server. Each row is
         a different timeslot
 
     Returns
@@ -418,7 +418,7 @@ def plot_server_total_discount(all_total_discount):
     Plot
 
     '''
-    result = all_total_discount
+    result = all_relative_price
 
     # Each row on the transposed matrix contains the data the user offloads
     # in each timeslot. Different rows mean different user.
@@ -428,10 +428,10 @@ def plot_server_total_discount(all_total_discount):
     if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
-    path_name = "all_total_discount"
-    suptitle = "total discount of the server at the end of each timeslot"
+    path_name = "all_relative_price"
+    suptitle = "Relative pricing of the server at the end of each timeslot"
     xlabel = "timeslots"
-    ylabel = "total discount"
+    ylabel = "relative pricing"
 
     create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset)
 

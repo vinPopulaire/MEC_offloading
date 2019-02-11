@@ -46,7 +46,7 @@ for case in cases:
     all_prices = np.empty((0,S), int)
     all_c = np.empty((0,S), int)
     all_fs = np.empty((0,S), int)
-    all_total_discount = np.empty((0,S), int)
+    all_relative_price = np.empty((0,S), int)
     all_server_welfare = np.empty((0,S), int)
 
     all_Rs = np.empty((0,S), int)
@@ -105,11 +105,11 @@ for case in cases:
         server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
         all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
 
-        Rs,total_discount,congestion,penetration = calculate_competitiveness(all_bytes_to_server, all_fs, **params)
+        Rs,relative_price,congestion,penetration = calculate_competitiveness(all_bytes_to_server, all_fs, all_prices, **params)
         all_Rs = np.append(all_Rs, [Rs], axis=0)
         all_congestion = np.append(all_congestion, [congestion], axis=0)
         all_penetration = np.append(all_penetration, [penetration], axis=0)
-        all_total_discount = np.append(all_total_discount, [total_discount], axis=0)
+        all_relative_price = np.append(all_relative_price, [relative_price], axis=0)
         probabilities = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
         for i in range(U):
@@ -146,7 +146,7 @@ for case in cases:
         plt.subplot(4,4,10)
         plot_server_cost(all_c)
         plt.subplot(4,4,11)
-        plot_server_total_discount(all_total_discount)
+        plot_server_relative_price(all_relative_price)
     else:
         plot_data_offloading_of_users(all_bytes_offloaded)
         plot_num_of_users_on_each_server(all_server_selected, **params)
@@ -158,7 +158,7 @@ for case in cases:
         plot_server_penetration(all_penetration)
         plot_server_discount(all_fs)
         plot_server_cost(all_c)
-        plot_server_total_discount(all_total_discount)
+        plot_server_relative_price(all_relative_price)
 
     # for user in range(U):
     #     plot_user_probability_to_select_server(user, all_probabilities)
