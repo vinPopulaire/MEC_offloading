@@ -425,7 +425,7 @@ def plot_server_total_discount(all_total_discount):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_total_discount"
