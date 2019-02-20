@@ -1,6 +1,7 @@
 /tags
 /plots
 /saved_notebooks
+/saved_runs
 .*.swp
 *.swp
 *.egg-info
