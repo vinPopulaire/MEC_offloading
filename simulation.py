@@ -178,3 +178,25 @@ for case in cases:
         plt.show()
     if SAVE_FIGS == True and ONE_FIGURE == True:
         plt.savefig("plots/" + case["users"] + "_" + case["servers"] + ".png")
+
+    # save parameters and results
+    import dill
+    with open('saved_runs/saved_parameters_' + case["users"] + "_" + case["servers"] , 'wb') as fp:
+        dill.dump(params, fp)
+
+    results = {
+        "all_bytes_offloaded": all_bytes_offloaded,
+        "all_server_selected": all_server_selected,
+        "all_prices": all_prices,
+        "all_bytes_to_server": all_bytes_to_server,
+        "all_server_welfare": all_server_welfare,
+        "all_Rs": all_Rs,
+        "all_penetration": all_penetration,
+        "all_fs": all_fs,
+        "all_c": all_c,
+        "all_relative_price": all_relative_price,
+        "all_probabilities": all_probabilities
+        }
+
+    with open('saved_runs/results_' + case["users"] + "_" + case["servers"] , 'wb') as fp:
+        dill.dump(results, fp)
