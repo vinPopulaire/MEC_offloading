@@ -39,6 +39,9 @@ cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 for case in cases:
 
+    # set random parameter in order to generate the same parameters
+    np.random.seed(42)
+
     params = set_parameters(case)
     U = params['U']
     S = params['S']
