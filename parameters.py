@@ -80,6 +80,14 @@ def set_parameters(case):
     if case["servers"] == "hetero":
         c = 0.2 + np.random.random(S)
         fs = 0.025 + np.random.random(S) * 0.1
+    if case["servers"] == "one-dominant":
+        c = np.array([0.1, 0.5, 0.5, 0.5, 0.5])
+        fs = np.array([0.1, 0.01, 0.01, 0.01, 0.01])
+    if case["servers"] == "two-dominant":
+        c = np.array([0.1, 0.1, 0.5, 0.5, 0.5])
+        fs = np.array([0.1, 0.1, 0.01, 0.01, 0.01])
+        # c = np.array([0.1, 0.12, 0.5, 0.5, 0.5])
+        # fs = np.array([0.1, 0.09, 0.01, 0.01, 0.01])
 
     price_min = 0.5
 

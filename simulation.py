@@ -20,15 +20,22 @@ from metrics import *
 from plots import *
 
 import time
+import itertools
 
 # Keep only three decimal places when printing numbers
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 
-# Select which case to run from homogeneous/heterogeneous users/servers
-# users: homo/hetero
-# servers: homo/hetero
-# cases = [{"users": "homo", "servers": "homo"}]
-cases = [{"users": "homo", "servers": "homo"}, {"users": "homo", "servers": "hetero"}, {"users": "hetero", "servers": "homo"}, {"users": "hetero", "servers": "hetero"}, ]
+# Generate all cases
+cases_setup = {
+        'users': ['homo','hetero'],
+        'servers': ['homo','hetero','one-dominant','two-dominant']
+        }
+
+keys, values = zip(*cases_setup.items())
+
+# Select which case to run
+# cases = [{"users": "hetero", "servers": "two-dominant"}]
+cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 for case in cases:
 
