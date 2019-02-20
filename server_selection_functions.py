@@ -93,8 +93,7 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, all_prices, U, S, b_m
     # set B_max of each server to be able to handle all traffic
     tmp1 = all_bytes_to_server[-1]
     tmp2 = b_max * U
-    congestion = np.power((tmp1/tmp2),5)
-    congestion[congestion==0] = 0.001 # to avoid division by zero
+    congestion = np.power((1 + (tmp1/tmp2)),3)
 
     # calculate "penetration"
     # use np.divide to handle cases where tmp2=0
@@ -102,7 +101,8 @@ def calculate_competitiveness(all_bytes_to_server, all_fs, all_prices, U, S, b_m
     tmp2 = np.sum(all_bytes_to_server)
     penetration = np.divide(tmp1, tmp2, out=np.zeros_like(tmp1), where=tmp2!=0)
 
-    Rs = relative_price * 1/congestion * penetration
+    w1 = w2 = w3 = 1/3
+    Rs = w1*relative_price + w2*1/congestion + w2*penetration
 
     return Rs,relative_price,congestion,penetration
 
