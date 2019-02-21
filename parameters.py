@@ -8,6 +8,7 @@ SAVE_FIGS = False
 ONE_FIGURE = True
 LOAD_SAVED_PARAMETERS = True
 SAVE_PARAMETERS = False
+SAVE_RESULTS = True
 
 def set_parameters(case):
     '''

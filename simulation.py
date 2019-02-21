@@ -18,6 +18,7 @@ from game_functions import *
 from server_selection_functions import *
 from metrics import *
 from plots import *
+from create_plots import *
 
 import time
 import itertools
@@ -38,6 +39,7 @@ keys, values = zip(*cases_setup.items())
 # cases = [{"users": "hetero", "servers": "two-dominant"}]
 cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
+results = {}
 for case in cases:
 
     if LOAD_SAVED_PARAMETERS == True:
@@ -72,8 +74,6 @@ for case in cases:
     all_penetration = np.empty((0,S), int)
 
     all_probabilities = [[] for i in range(U)]
-
-    # np.random.seed(2)
 
     # Get the initial values for probabilities and prices
     probabilities, prices = initialize(**params)
@@ -137,55 +137,26 @@ for case in cases:
         all_probabilities[i] = np.array(all_probabilities[i])
     all_probabilities = np.array(all_probabilities)
 
+    # keep results in a dictionary
+    key = case["users"] + "_" + case["servers"]
+    results[key] = {
+        "all_bytes_offloaded": all_bytes_offloaded,
+        "all_server_selected": all_server_selected,
+        "all_prices": all_prices,
+        "all_bytes_to_server": all_bytes_to_server,
+        "all_server_welfare": all_server_welfare,
+        "all_Rs": all_Rs,
+        "all_relative_price": all_relative_price,
+        "all_congestion": all_congestion,
+        "all_penetration": all_penetration,
+        "all_fs": all_fs,
+        "all_c": all_c,
+        "all_probabilities": all_probabilities
+        }
+
     end = time.time()
     print("Time of simulation:")
     print(end - start)
-
-    if ONE_FIGURE == True:
-        plt.figure(figsize=(40.0, 30.0))
-        plt.subplot(4,4,1)
-        plot_data_offloading_of_users(all_bytes_offloaded)
-        plt.subplot(4,4,2)
-        plot_num_of_users_on_each_server(all_server_selected, **params)
-        plt.subplot(4,4,3)
-        plot_pricing_of_each_server(all_prices)
-        plt.subplot(4,4,4)
-        plot_receiving_data_on_each_server(all_bytes_to_server)
-        plt.subplot(4,4,5)
-        plot_server_welfare(all_server_welfare)
-        plt.subplot(4,4,6)
-        plot_server_Rs(all_Rs)
-        plt.subplot(4,4,7)
-        plot_server_congestion(all_congestion)
-        plt.subplot(4,4,8)
-        plot_server_penetration(all_penetration)
-        plt.subplot(4,4,9)
-        plot_server_discount(all_fs)
-        plt.subplot(4,4,10)
-        plot_server_cost(all_c)
-        plt.subplot(4,4,11)
-        plot_server_relative_price(all_relative_price)
-    else:
-        plot_data_offloading_of_users(all_bytes_offloaded)
-        plot_num_of_users_on_each_server(all_server_selected, **params)
-        plot_pricing_of_each_server(all_prices)
-        plot_receiving_data_on_each_server(all_bytes_to_server)
-        plot_server_welfare(all_server_welfare)
-        plot_server_Rs(all_Rs)
-        plot_server_congestion(all_congestion)
-        plot_server_penetration(all_penetration)
-        plot_server_discount(all_fs)
-        plot_server_cost(all_c)
-        plot_server_relative_price(all_relative_price)
-
-    # for user in range(U):
-    #     plot_user_probability_to_select_server(user, all_probabilities)
-
-    # Go to parameters.py to change the setting
-    if SAVE_FIGS == False:
-        plt.show()
-    if SAVE_FIGS == True and ONE_FIGURE == True:
-        plt.savefig("plots/" + case["users"] + "_" + case["servers"] + ".png")
 
     # save parameters and results
     if SAVE_PARAMETERS == True:
@@ -193,20 +164,9 @@ for case in cases:
         with open(outfile, 'wb') as fp:
             dill.dump(params, fp)
 
-    results = {
-        "all_bytes_offloaded": all_bytes_offloaded,
-        "all_server_selected": all_server_selected,
-        "all_prices": all_prices,
-        "all_bytes_to_server": all_bytes_to_server,
-        "all_server_welfare": all_server_welfare,
-        "all_Rs": all_Rs,
-        "all_penetration": all_penetration,
-        "all_fs": all_fs,
-        "all_c": all_c,
-        "all_relative_price": all_relative_price,
-        "all_probabilities": all_probabilities
-        }
+    if SAVE_RESULTS == True:
+        outfile = 'saved_runs/results_' + case["users"] + "_" + case["servers"]
+        with open(outfile , 'wb') as fp:
+            dill.dump(results[key], fp)
 
-    outfile = 'saved_runs/results_' + case["users"] + "_" + case["servers"]
-    with open(outfile , 'wb') as fp:
-        dill.dump(results, fp)
+create_plots(results, cases, params)
