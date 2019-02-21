@@ -21,6 +21,7 @@ from plots import *
 
 import time
 import itertools
+import dill
 
 # Keep only three decimal places when printing numbers
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
@@ -39,10 +40,17 @@ cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 for case in cases:
 
-    # set random parameter in order to generate the same parameters
-    np.random.seed(42)
+    if LOAD_SAVED_PARAMETERS == True:
+        print("Loading parameters")
+        infile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
+        with open(infile, 'rb') as in_strm:
+            params = dill.load(in_strm)
+    else:
+        # set random parameter in order to generate the same parameters
+        print("Generating new parameters")
+        np.random.seed(42)
+        params = set_parameters(case)
 
-    params = set_parameters(case)
     U = params['U']
     S = params['S']
     fs = params['fs']
@@ -180,9 +188,10 @@ for case in cases:
         plt.savefig("plots/" + case["users"] + "_" + case["servers"] + ".png")
 
     # save parameters and results
-    import dill
-    with open('saved_runs/saved_parameters_' + case["users"] + "_" + case["servers"] , 'wb') as fp:
-        dill.dump(params, fp)
+    if SAVE_PARAMETERS == True:
+        outfile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
+        with open(outfile, 'wb') as fp:
+            dill.dump(params, fp)
 
     results = {
         "all_bytes_offloaded": all_bytes_offloaded,
@@ -198,5 +207,6 @@ for case in cases:
         "all_probabilities": all_probabilities
         }
 
-    with open('saved_runs/results_' + case["users"] + "_" + case["servers"] , 'wb') as fp:
+    outfile = 'saved_runs/results_' + case["users"] + "_" + case["servers"]
+    with open(outfile , 'wb') as fp:
         dill.dump(results, fp)

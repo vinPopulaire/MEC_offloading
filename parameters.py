@@ -6,6 +6,8 @@ import numpy as np
 
 SAVE_FIGS = False
 ONE_FIGURE = True
+LOAD_SAVED_PARAMETERS = True
+SAVE_PARAMETERS = False
 
 def set_parameters(case):
     '''
