@@ -462,7 +462,7 @@ def plot_server_cost(all_c):
     if offset == 0:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
-    path_name = "all_c'"
+    path_name = "all_c"
     suptitle = "computing cost of the server at the end of each timeslot"
     xlabel = "timeslots"
     ylabel = "computing cost"

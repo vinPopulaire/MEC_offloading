@@ -48,7 +48,7 @@ for case in cases:
         with open(infile, 'rb') as in_strm:
             params = dill.load(in_strm)
     else:
-        # set random parameter in order to generate the same parameters
+        # Set random parameter in order to generate the same parameters
         print("Generating new parameters")
         np.random.seed(42)
         params = set_parameters(case)
@@ -60,19 +60,9 @@ for case in cases:
 
     start = time.time()
 
-    all_server_selected = np.empty((0,U), int)
-    all_bytes_offloaded = np.empty((0,U), int)
-    all_bytes_to_server = np.empty((0,S), int)
-    all_prices = np.empty((0,S), int)
-    all_c = np.empty((0,S), int)
-    all_fs = np.empty((0,S), int)
-    all_relative_price = np.empty((0,S), int)
-    all_server_welfare = np.empty((0,S), int)
-
-    all_Rs = np.empty((0,S), int)
-    all_congestion = np.empty((0,S), int)
-    all_penetration = np.empty((0,S), int)
-
+    # Initialize empty arrays for results
+    all_server_selected = all_bytes_offloaded = np.empty((0,U), int)
+    all_bytes_to_server = all_prices = all_c = all_fs = all_relative_price = all_server_welfare = all_Rs = all_congestion = all_penetration = np.empty((0,S), int)
     all_probabilities = [[] for i in range(U)]
 
     # Get the initial values for probabilities and prices
@@ -87,7 +77,7 @@ for case in cases:
     while not all_users_sure(probabilities):
         # Each user selects a server to which he will offload computation
         server_selected = server_selection(probabilities, **params)
-        # add the selected servers as a row in the matrix
+        # Add the selected servers as a row in the matrix
         all_server_selected = np.append(all_server_selected, [server_selected], axis=0)
 
         # Game starts in order to converge to the optimum values of data offloading
@@ -120,14 +110,19 @@ for case in cases:
         all_fs = np.append(all_fs, [fs], axis=0)
         all_c = np.append(all_c, [c], axis=0)
 
+        # Calculate the welfare of the servers
         server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
         all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
 
+        # Calculate the competitiveness of each server
         Rs,relative_price,congestion,penetration = calculate_competitiveness(all_bytes_to_server, all_fs, all_prices, **params)
+
         all_Rs = np.append(all_Rs, [Rs], axis=0)
         all_congestion = np.append(all_congestion, [congestion], axis=0)
         all_penetration = np.append(all_penetration, [penetration], axis=0)
         all_relative_price = np.append(all_relative_price, [relative_price], axis=0)
+
+        # Update the probabilities
         probabilities = update_probabilities(Rs, probabilities, server_selected, b, **params)
 
         for i in range(U):
@@ -137,7 +132,7 @@ for case in cases:
         all_probabilities[i] = np.array(all_probabilities[i])
     all_probabilities = np.array(all_probabilities)
 
-    # keep results in a dictionary
+    # Keep results in a dictionary in order to save and plot them
     key = case["users"] + "_" + case["servers"]
     results[key] = {
         "all_bytes_offloaded": all_bytes_offloaded,
@@ -158,7 +153,7 @@ for case in cases:
     print("Time of simulation:")
     print(end - start)
 
-    # save parameters and results
+    # Save parameters and results
     if SAVE_PARAMETERS == True:
         outfile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
         with open(outfile, 'wb') as fp:
@@ -169,4 +164,5 @@ for case in cases:
         with open(outfile , 'wb') as fp:
             dill.dump(results[key], fp)
 
+# Create the plots
 create_plots(results, cases, params)
