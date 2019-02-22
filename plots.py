@@ -121,7 +121,12 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
 
     plt.xlabel('iterations')
     plt.ylabel('amount of data (bytes)')
-    plt.show(block=False)
+
+    path_name = "all_bytes_offloaded"
+    if SAVE_FIGS == True and ONE_FIGURE == False:
+        plt.savefig("plots/" + path_name + ".png")
+    else:
+        plt.show(block=False)
 
 
 def plot_num_of_users_on_each_server(all_server_selected, S, **params):
