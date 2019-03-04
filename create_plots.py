@@ -110,11 +110,13 @@ if __name__ == '__main__':
     results = {}
     for case in cases:
 
-        infile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
+        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
+
         with open(infile, 'rb') as in_strm:
             params = dill.load(in_strm)
 
-        infile = "saved_runs/results_" + case["users"] + "_" + case["servers"]
+        infile = "saved_runs/results/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
+
         with open(infile, 'rb') as in_strm:
             key = case["users"] + "_" + case["servers"]
             results[key] = dill.load(in_strm)

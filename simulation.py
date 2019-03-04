@@ -44,7 +44,8 @@ for case in cases:
 
     if LOAD_SAVED_PARAMETERS == True:
         print("Loading parameters")
-        infile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
+        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "0.10"
+
         with open(infile, 'rb') as in_strm:
             params = dill.load(in_strm)
     else:
@@ -155,12 +156,14 @@ for case in cases:
 
     # Save parameters and results
     if SAVE_PARAMETERS == True:
-        outfile = "saved_runs/saved_parameters_" + case["users"] + "_" + case["servers"]
+        outfile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
+
         with open(outfile, 'wb') as fp:
             dill.dump(params, fp)
 
     if SAVE_RESULTS == True:
-        outfile = 'saved_runs/results_' + case["users"] + "_" + case["servers"]
+        outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_constant-pricing"
+
         with open(outfile , 'wb') as fp:
             dill.dump(results[key], fp)
 
