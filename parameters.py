@@ -10,6 +10,8 @@ LOAD_SAVED_PARAMETERS = True
 SAVE_PARAMETERS = False
 SAVE_RESULTS = True
 
+CONSTANT_PRICING = True
+
 def set_parameters(case):
     '''
     Sets the parameters used in the simulation

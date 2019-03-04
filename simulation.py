@@ -72,7 +72,11 @@ for case in cases:
     for i in range(U):
         all_probabilities[i].append(probabilities[i])
 
-    all_prices = np.append(all_prices, [prices], axis=0)
+    if CONSTANT_PRICING:
+        # Set constant price if needed
+        constant_price = np.array([1.96, 1.88, 1.94, 1.78, 1.92])
+        prices = constant_price
+        all_prices = np.append(all_prices, [prices], axis=0)
 
     # Repeat until every user is sure on the selected server
     while not all_users_sure(probabilities):
@@ -91,8 +95,12 @@ for case in cases:
             # Users play a game to converge to the Nash Equilibrium
             b = play_offloading_game(server_selected, b_old, prices_old, **params)
 
-            # Servers update their prices based on the users' offloading of data
-            prices = play_pricing_game(server_selected, b, **params)
+            if CONSTANT_PRICING:
+                # Servers set their next price as they had initally set
+                prices = constant_price
+            else:
+                # Servers update their prices based on the users' offloading of data
+                prices = play_pricing_game(server_selected, b, **params)
 
             # Check if game has converged
             converged = game_converged(b,b_old,prices,prices_old, **params)
