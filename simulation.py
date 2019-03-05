@@ -62,7 +62,7 @@ for case in cases:
     start = time.time()
 
     # Initialize empty arrays for results
-    all_server_selected = all_bytes_offloaded = np.empty((0,U), int)
+    all_server_selected = all_bytes_offloaded = all_user_utility = np.empty((0,U), int)
     all_bytes_to_server = all_prices = all_c = all_fs = all_relative_price = all_server_welfare = all_Rs = all_congestion = all_penetration = np.empty((0,S), int)
     all_probabilities = [[] for i in range(U)]
 
@@ -123,6 +123,10 @@ for case in cases:
         server_welfare = calculate_server_welfare(prices, bytes_to_server, **params)
         all_server_welfare = np.append(all_server_welfare, [server_welfare], axis=0)
 
+        # Calculate the perceived utility of the users
+        user_utility = calculate_user_utility(b, server_selected, prices, **params)
+        all_user_utility = np.append(all_user_utility, [user_utility], axis=0)
+
         # Calculate the competitiveness of each server
         Rs,relative_price,congestion,penetration = calculate_competitiveness(all_bytes_to_server, all_fs, all_prices, **params)
 
@@ -149,6 +153,7 @@ for case in cases:
         "all_prices": all_prices,
         "all_bytes_to_server": all_bytes_to_server,
         "all_server_welfare": all_server_welfare,
+        "all_user_utility": all_user_utility,
         "all_Rs": all_Rs,
         "all_relative_price": all_relative_price,
         "all_congestion": all_congestion,
