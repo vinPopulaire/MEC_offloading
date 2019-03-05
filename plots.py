@@ -129,6 +129,47 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
         plt.show(block=False)
 
 
+def plot_user_utility(all_user_utility):
+    '''
+    Plot the utility each user has in each timeslot
+
+    Parameters
+    ----------
+
+    all_user_utility: 2-d array
+        Contains on each row the utility value each user has. Each row is
+        a different timeslot
+
+    Returns
+    -------
+    Plot
+
+    '''
+    result = all_user_utility
+
+    # Each row on the transposed matrix contains the data the user offloads
+    # in each timeslot. Different rows mean different user.
+    result = np.transpose(result)
+
+    suptitle = "Utility each user has in each timeslot"
+
+    if ONE_FIGURE == False:
+        fig, ax = setup_plots(suptitle)
+
+    for index, row in enumerate(result):
+
+        line = plt.plot(row, lw=2.5)
+
+    plt.xlabel('iterations')
+    plt.ylabel('utility')
+
+    path_name = "all_user_utility"
+    if SAVE_FIGS == True and ONE_FIGURE == False:
+        plt.savefig("plots/" + path_name + ".png")
+    else:
+        plt.show(block=False)
+
+
 def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     '''
     Plot number of users on each server every timeslot
