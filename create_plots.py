@@ -113,7 +113,7 @@ if __name__ == '__main__':
     results = {}
     for case in cases:
 
-        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
+        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "0.10"
 
         with open(infile, 'rb') as in_strm:
             params = dill.load(in_strm)
