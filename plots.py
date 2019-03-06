@@ -199,7 +199,7 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_server_selected"
@@ -233,7 +233,7 @@ def plot_pricing_of_each_server(all_prices):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_prices"
@@ -267,7 +267,7 @@ def plot_receiving_data_on_each_server(all_bytes_to_server):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_bytes_to_server"
@@ -301,7 +301,7 @@ def plot_server_welfare(all_server_welfare):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_server_welfare"
@@ -335,7 +335,7 @@ def plot_server_Rs(all_Rs):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_Rs"
@@ -369,7 +369,7 @@ def plot_server_congestion(all_congestion):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_congestion"
@@ -403,7 +403,7 @@ def plot_server_penetration(all_penetration):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_penetration"
@@ -437,7 +437,7 @@ def plot_server_discount(all_fs):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_fs"
@@ -505,7 +505,7 @@ def plot_server_cost(all_c):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_c"
@@ -541,7 +541,7 @@ def plot_user_probability_to_select_server(user_id, all_probabilities):
     result = np.transpose(result)
 
     offset = np.abs(np.max(result) - np.min(result))*0.03
-    if offset == 0:
+    if offset < 0.005:
         offset = 0.005 + np.abs(np.max(result))*0.005;
 
     path_name = "all_probabilities_user_" + str(user_id)
