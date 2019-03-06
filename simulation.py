@@ -169,13 +169,19 @@ for case in cases:
 
     # Save parameters and results
     if SAVE_PARAMETERS == True:
-        outfile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
+        if CONSTANT_PRICING == True:
+            outfile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_constant-pricing"
+        else:
+            outfile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
 
         with open(outfile, 'wb') as fp:
             dill.dump(params, fp)
 
     if SAVE_RESULTS == True:
-        outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_constant-pricing"
+        if CONSTANT_PRICING == True:
+            outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_constant-pricing"
+        else:
+            outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"])
 
         with open(outfile , 'wb') as fp:
             dill.dump(results[key], fp)
