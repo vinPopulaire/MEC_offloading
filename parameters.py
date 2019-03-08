@@ -10,7 +10,7 @@ LOAD_SAVED_PARAMETERS = True
 SAVE_PARAMETERS = False
 SAVE_RESULTS = True
 
-CONSTANT_PRICING = True
+CONSTANT_PRICING = False
 
 def set_parameters(case):
     '''
@@ -68,9 +68,10 @@ def set_parameters(case):
 
     # User parameters
     if case["users"] == "homo":
-        a = 1*1e3 * np.ones(U) # homo hetero
+        a = 1*1e3 * np.ones(U) + 0.5e4
+        # a = 1*1e2 * np.ones(U) + 0.5e3
     if case["users"] == "hetero":
-        a = 5*1e2 + np.random.random(U)*1e3
+        a = 1e3 + np.random.random(U)*1e4
 
     b_min = 0
     b_max = 1000
@@ -80,8 +81,10 @@ def set_parameters(case):
         c = 0.2 * np.ones(S)
         fs = 0.025 * np.ones(S)
     if case["servers"] == "hetero":
-        c = 0.2 + np.random.random(S)
-        fs = 0.025 + np.random.random(S) * 0.1
+        c = np.array([0.12, 0.14, 0.2, 0.17, 0.13])
+        fs = np.array([0.05, 0.04, 0.02, 0.03, 0.05])
+        # c = 0.2 + np.random.random(S)
+        # fs = 0.025 + np.random.random(S) * 0.1
     if case["servers"] == "one-dominant":
         c = np.array([0.1, 0.5, 0.5, 0.5, 0.5])
         fs = np.array([0.1, 0.01, 0.01, 0.01, 0.01])
@@ -93,6 +96,6 @@ def set_parameters(case):
 
     price_min = 0.5
 
-    learning_rate = 0.1
+    learning_rate = 0.2
 
     return locals()

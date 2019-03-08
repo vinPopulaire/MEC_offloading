@@ -36,8 +36,8 @@ cases_setup = {
 keys, values = zip(*cases_setup.items())
 
 # Select which case to run
-# cases = [{"users": "hetero", "servers": "two-dominant"}]
-cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
+cases = [{"users": "hetero", "servers": "hetero"}]
+# cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 final_results = []
 for repetition in range(131,1000):
@@ -204,4 +204,4 @@ if SAVE_RESULTS == True:
         dill.dump(final_results, fp)
 
 # Create the plots
-create_plots(results, cases, params)
+# create_plots(results, cases, params)
