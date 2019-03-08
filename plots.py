@@ -27,7 +27,7 @@ def setup_plots(suptitle):
     Figure and axis matplotlib structs
 
     '''
-    fig, ax = plt.subplots(1, 1, figsize=(12, 9))
+    fig, ax = plt.subplots(1, 1, figsize=(18, 15))
     fig.suptitle(suptitle)
 
     ax.spines['top'].set_visible(False)
