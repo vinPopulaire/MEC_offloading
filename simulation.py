@@ -40,7 +40,7 @@ cases = [{"users": "hetero", "servers": "hetero"}]
 # cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 final_results = []
-for repetition in range(131,1000):
+for repetition in range(1000):
     print("Repetition no: " + str(repetition+1))
 
     results = {}
