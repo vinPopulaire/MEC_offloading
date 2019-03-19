@@ -39,7 +39,6 @@ keys, values = zip(*cases_setup.items())
 cases = [{"users": "hetero", "servers": "hetero"}]
 # cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-final_results = []
 for repetition in range(1000):
     print("Repetition no: " + str(repetition+1))
 
@@ -172,7 +171,6 @@ for repetition in range(1000):
             "all_probabilities": all_probabilities,
             "running_time": running_time
             }
-        final_results.append(results)
 
         # Save parameters and results
         if SAVE_PARAMETERS == True:
@@ -192,16 +190,6 @@ for repetition in range(1000):
 
             with open(outfile , 'wb') as fp:
                 dill.dump(results[key], fp)
-
-# Save ovarall results
-if SAVE_RESULTS == True:
-    if CONSTANT_PRICING == True:
-        outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_constant-pricing" + "_all_runs"
-    else:
-        outfile = 'saved_runs/results/' + case["users"] + "_" + case["servers"] + "_lr_" + "{0:.2f}".format(params["learning_rate"]) + "_all_runs"
-
-    with open(outfile , 'wb') as fp:
-        dill.dump(final_results, fp)
 
 # Create the plots
 # create_plots(results, cases, params)
