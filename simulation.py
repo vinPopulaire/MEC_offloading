@@ -79,7 +79,6 @@ for repetition in range(1000):
             # Set constant price if needed
             constant_price = np.array([1.96, 1.88, 1.94, 1.78, 1.92])
             prices = constant_price
-            all_prices = np.append(all_prices, [prices], axis=0)
 
         # Repeat until every user is sure on the selected server
         while not all_users_sure(probabilities):
