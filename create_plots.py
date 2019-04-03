@@ -47,42 +47,42 @@ def create_plots(results, cases, params):
         if ONE_FIGURE == True:
             plt.figure(figsize=(40.0, 30.0))
             plt.subplot(4,4,1)
-            plot_data_offloading_of_users(results[key]['all_bytes_offloaded'])
+            plot_data_offloading_of_users(results[key]['all_bytes_offloaded'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,2)
-            plot_num_of_users_on_each_server(results[key]['all_server_selected'], **params)
+            plot_num_of_users_on_each_server(results[key]['all_server_selected'][:results[key]["median_timeslots"]], **params)
             plt.subplot(4,4,3)
-            plot_pricing_of_each_server(results[key]['all_prices'])
+            plot_pricing_of_each_server(results[key]['all_prices'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,4)
-            plot_receiving_data_on_each_server(results[key]['all_bytes_to_server'])
+            plot_receiving_data_on_each_server(results[key]['all_bytes_to_server'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,5)
-            plot_server_Rs(results[key]['all_Rs'])
+            plot_server_Rs(results[key]['all_Rs'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,6)
-            plot_server_congestion(results[key]['all_congestion'])
+            plot_server_congestion(results[key]['all_congestion'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,7)
-            plot_server_penetration(results[key]['all_penetration'])
+            plot_server_penetration(results[key]['all_penetration'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,8)
-            plot_server_discount(results[key]['all_fs'])
+            plot_server_discount(results[key]['all_fs'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,9)
-            plot_server_cost(results[key]['all_c'])
+            plot_server_cost(results[key]['all_c'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,10)
-            plot_server_relative_price(results[key]['all_relative_price'])
+            plot_server_relative_price(results[key]['all_relative_price'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,11)
-            plot_server_welfare(results[key]['all_server_welfare'])
+            plot_server_welfare(results[key]['all_server_welfare'][:results[key]["median_timeslots"]])
             plt.subplot(4,4,12)
-            plot_user_utility(results[key]['all_user_utility'])
+            plot_user_utility(results[key]['all_user_utility'][:results[key]["median_timeslots"]])
         else:
-            plot_data_offloading_of_users(results[key]['all_bytes_offloaded'])
-            plot_num_of_users_on_each_server(results[key]['all_server_selected'], **params)
-            plot_pricing_of_each_server(results[key]['all_prices'])
-            plot_receiving_data_on_each_server(results[key]['all_bytes_to_server'])
-            plot_server_Rs(results[key]['all_Rs'])
-            plot_server_congestion(results[key]['all_congestion'])
-            plot_server_penetration(results[key]['all_penetration'])
-            plot_server_discount(results[key]['all_fs'])
-            plot_server_cost(results[key]['all_c'])
-            plot_server_relative_price(results[key]['all_relative_price'])
-            plot_server_welfare(results[key]['all_server_welfare'])
-            plot_user_utility(results[key]['all_user_utility'])
+            plot_data_offloading_of_users(results[key]['all_bytes_offloaded'][:results[key]["median_timeslots"]])
+            plot_num_of_users_on_each_server(results[key]['all_server_selected'][:results[key]["median_timeslots"]], **params)
+            plot_pricing_of_each_server(results[key]['all_prices'][:results[key]["median_timeslots"]])
+            plot_receiving_data_on_each_server(results[key]['all_bytes_to_server'][:results[key]["median_timeslots"]])
+            plot_server_Rs(results[key]['all_Rs'][:results[key]["median_timeslots"]])
+            plot_server_congestion(results[key]['all_congestion'][:results[key]["median_timeslots"]])
+            plot_server_penetration(results[key]['all_penetration'][:results[key]["median_timeslots"]])
+            plot_server_discount(results[key]['all_fs'][:results[key]["median_timeslots"]])
+            plot_server_cost(results[key]['all_c'][:results[key]["median_timeslots"]])
+            plot_server_relative_price(results[key]['all_relative_price'][:results[key]["median_timeslots"]])
+            plot_server_welfare(results[key]['all_server_welfare'][:results[key]["median_timeslots"]])
+            plot_user_utility(results[key]['all_user_utility'][:results[key]["median_timeslots"]])
 
         # for user in range(U):
         #     plot_user_probability_to_select_server(user, all_probabilities)
@@ -107,13 +107,13 @@ if __name__ == '__main__':
     keys, values = zip(*cases_setup.items())
 
     # Select which case to run
-    # cases = [{"users": "hetero", "servers": "hetero"}]
-    cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    cases = [{"users": "hetero", "servers": "hetero"}]
+    # cases = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
     results = {}
     for case in cases:
 
-        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "0.10"
+        infile = "saved_runs/parameters/" + case["users"] + "_" + case["servers"] + "_lr_" + "0.20"
 
         with open(infile, 'rb') as in_strm:
             params = dill.load(in_strm)
