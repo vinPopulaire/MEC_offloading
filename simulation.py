@@ -77,7 +77,11 @@ for repetition in range(1000):
 
         if CONSTANT_PRICING:
             # Set constant price if needed
-            constant_price = np.array([1.96, 1.88, 1.94, 1.78, 1.92])
+            # constant_price = np.array([1.96, 1.88, 1.94, 1.78, 1.92])
+            # constant_price = np.array([1.8538047 , 1.96681087, 2.1213625 , 2.09852921, 1.93421449])
+            # constant_price = np.array([1.7538047 , 1.86681087, 2.0213625 , 1.99852921, 1.83421449])
+            # constant_price = np.array([1.9538047 , 2.06681087, 2.2213625 , 2.19852921, 2.03421449])
+            constant_price = np.array([1.5538047 , 1.66681087, 1.8213625 , 1.79852921, 1.63421449])
             prices = constant_price
 
         # Repeat until every user is sure on the selected server
