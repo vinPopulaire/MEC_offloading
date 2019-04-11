@@ -86,11 +86,11 @@ def set_parameters(case):
         # c = 0.2 + np.random.random(S)
         # fs = 0.025 + np.random.random(S) * 0.1
     if case["servers"] == "one-dominant":
-        c = np.array([0.1, 0.5, 0.5, 0.5, 0.5])
-        fs = np.array([0.1, 0.01, 0.01, 0.01, 0.01])
+        c = np.array([0.12, 0.2, 0.2, 0.2, 0.2])
+        fs = np.array([0.05, 0.02, 0.02, 0.02, 0.02])
     if case["servers"] == "two-dominant":
-        c = np.array([0.1, 0.1, 0.5, 0.5, 0.5])
-        fs = np.array([0.1, 0.1, 0.01, 0.01, 0.01])
+        c = np.array([0.12, 0.12, 0.2, 0.2, 0.2])
+        fs = np.array([0.05, 0.05, 0.02, 0.02, 0.02])
         # c = np.array([0.1, 0.12, 0.5, 0.5, 0.5])
         # fs = np.array([0.1, 0.09, 0.01, 0.01, 0.01])
 
