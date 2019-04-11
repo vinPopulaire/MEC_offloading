@@ -3,6 +3,7 @@ Plot functions to graphically present simulation results
 '''
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
 from parameters import SAVE_FIGS, ONE_FIGURE
@@ -27,8 +28,15 @@ def setup_plots(suptitle):
     Figure and axis matplotlib structs
 
     '''
-    fig, ax = plt.subplots(1, 1, figsize=(18, 15))
-    fig.suptitle(suptitle)
+    fig, ax = plt.subplots(1, 1, figsize=(15, 12))
+    # fig.suptitle(suptitle)
+    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label]):
+        item.set_fontsize(30)
+    for item in (ax.get_xticklabels() + ax.get_yticklabels()):
+        item.set_fontsize(26)
+        item.set_fontweight("bold")
+    font = {'weight' : 'bold'}
+    matplotlib.rc('font', **font)
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -66,7 +74,7 @@ def create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset):
 
     for index, row in enumerate(result):
 
-        line = plt.plot(row, lw=2.5, color=color_sequence[index])
+        line = plt.plot(row, lw=5, color=color_sequence[index])
 
         # set the text to start on the y of the last value of the line
         y_pos = row[-1]
@@ -77,10 +85,10 @@ def create_plot_server(result, path_name, suptitle, xlabel, ylabel, offset):
 
         y_positions.append(y_pos)
 
-        plt.text(len(row) + 5, y_pos, server_name, fontsize=14, color=color_sequence[index])
+        plt.text(len(row) + 5, y_pos, server_name, fontsize=24, color=color_sequence[index])
 
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    plt.xlabel(xlabel, fontweight='bold')
+    plt.ylabel(ylabel, fontweight='bold')
 
     if SAVE_FIGS == True and ONE_FIGURE == False:
         plt.savefig("plots/" + path_name + ".png")
@@ -116,11 +124,13 @@ def plot_data_offloading_of_users(all_bytes_offloaded):
         fig, ax = setup_plots(suptitle)
 
     for index, row in enumerate(result):
+        # display only some of the users on the plot
+        if index%11 == 0:
+            line = plt.plot(row, lw=5)
+        # line = plt.plot(row, lw=5)
 
-        line = plt.plot(row, lw=2.5)
-
-    plt.xlabel('iterations')
-    plt.ylabel('amount of data (bytes)')
+    plt.xlabel('iterations', fontweight='bold')
+    plt.ylabel('amount of data (bytes)', fontweight='bold')
 
     path_name = "all_bytes_offloaded"
     if SAVE_FIGS == True and ONE_FIGURE == False:
@@ -158,10 +168,10 @@ def plot_user_utility(all_user_utility):
 
     for index, row in enumerate(result):
 
-        line = plt.plot(row, lw=2.5)
+        line = plt.plot(row, lw=5)
 
-    plt.xlabel('iterations')
-    plt.ylabel('utility')
+    plt.xlabel('iterations', fontweight='bold')
+    plt.ylabel('utility', fontweight='bold')
 
     path_name = "all_user_utility"
     if SAVE_FIGS == True and ONE_FIGURE == False:
