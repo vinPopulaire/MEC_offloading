@@ -11,6 +11,7 @@ SAVE_PARAMETERS = False
 SAVE_RESULTS = True
 
 CONSTANT_PRICING = False
+CONSTANT_OFFLOADING = False
 
 def set_parameters(case):
     '''

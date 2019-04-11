@@ -61,6 +61,7 @@ for repetition in range(1000):
         S = params['S']
         fs = params['fs']
         c = params['c']
+        b_max = params['b_max']
 
         start = time.time()
 
@@ -93,13 +94,21 @@ for repetition in range(1000):
 
             # Game starts in order to converge to the optimum values of data offloading
             # Repeat until convergence for both users and servers
-            b_old = np.ones(U)
+
+            if CONSTANT_OFFLOADING:
+                b_old = np.ones(U) * 0.586 * b_max
+            else:
+                b_old = np.ones(U)
+
             prices_old = np.ones(S)
 
             converged = False
             while not converged:
                 # Users play a game to converge to the Nash Equilibrium
-                b = play_offloading_game(server_selected, b_old, prices_old, **params)
+                if CONSTANT_OFFLOADING:
+                    b = b_old
+                else:
+                    b = play_offloading_game(server_selected, b_old, prices_old, **params)
 
                 if CONSTANT_PRICING:
                     # Servers set their next price as they had initally set
