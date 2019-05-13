@@ -199,10 +199,11 @@ def plot_num_of_users_on_each_server(all_server_selected, S, **params):
 
     '''
     # How many users each server has each timeslot
-    result = np.empty((0, S), int)
-    for row in all_server_selected:
-        # the bincount finds how many times each server has been selected
-        result = np.append(result, [np.bincount(row, minlength=S)], axis=0)
+    # result = np.empty((0, S), int)
+    # for row in all_server_selected:
+    #     # the bincount finds how many times each server has been selected
+    #     result = np.append(result, [np.bincount(row, minlength=S)], axis=0)
+    result = all_server_selected
 
     # Each row on the transposed matrix contains how many users the server has
     # in each timeslot. Different rows mean different servers.
