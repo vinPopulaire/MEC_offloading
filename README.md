@@ -1,5 +1,6 @@
 # MEC_offloading
 Code for generating Intelligent Dynamic Data Offloading in a Competitive Mobile Edge Computing Market paper's simulation results.
+https://www.mdpi.com/1999-5903/11/5/118/pdf
 
 ### Abstract
 
